@@ -10,28 +10,26 @@ import os
 import cv2
 import string
 
-symbols = string.ascii_lowercase + "0123456789" # All symbols captcha can contain
-num_pics = 1
+symbols = string.ascii_lowercase + "0123456789"
+num_pics = 5
+shape = (33, 60)
 
-def preprocess_data():
+def process_data():
     X = np.zeros((num_pics, 33, 60))
-    y = np.zeros((5, 1, 36))
+    y = np.zeros((4, num_pics, 36))
 
-    # Read image as grayscale
-    pic = cv2.imread('0_w5db.png')
-    img = cv2.imread(('0_w5db.png'), cv2.IMREAD_GRAYSCALE)
-    pic_target = pic[:-4]
- 
-    # Define targets and code them using OneHotEncoding
-    targs = np.zeros((5, 36))
-    #for j, l in enumerate(pic_target):
-    #    ind = symbols.find(l)
-    #    targs[j, ind] = 1
-    X[0] = img
-    y[:, 0] = targs
+    for count, pic in enumerate(os.listdir(path='./Final Train Data')):
+        if count >= 5:
+            break
+        address = pic
+        print(address)
+        img = cv2.imread((os.path.join('./Final Train Data', pic)), cv2.IMREAD_GRAYSCALE)
+        X[count] = img
+        targs = np.zeros((4, 36))
+        for num in range(0, 4):
+            ind = symbols.find(address[num+2])
+            targs[num, ind] = 1
+        y[:, count] = targs
     
     # Return final data
     return X, y
-
-X, y = preprocess_data()
-
