@@ -10,21 +10,25 @@ import os
 import cv2
 import string
 
+from keras import layers
+from keras.models import Model
+
 symbols = string.ascii_lowercase + "0123456789"
-num_pics = 5
-shape = (33, 60)
+num_pics = 201
+shape = (33, 60, 1)
 
 def process_data():
-    X = np.zeros((num_pics, 33, 60))
+    X = np.zeros((num_pics, 33, 60, 1))
     y = np.zeros((4, num_pics, 36))
 
     for count, pic in enumerate(os.listdir(path='./Final Train Data')):
-        if count >= 5:
-            break
         address = pic
+        if not (address.endswith('.png')):
+            continue
         print(address)
         img = cv2.imread((os.path.join('./Final Train Data', pic)), cv2.IMREAD_GRAYSCALE)
-        X[count] = img
+        img = cv2.resize(img, (60, 33))
+        X[count, :, :, 0] = img
         targs = np.zeros((4, 36))
         for num in range(0, 4):
             ind = symbols.find(address[num+2])
