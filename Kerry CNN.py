@@ -56,3 +56,17 @@ X_test, y_test = X[36000:],y[:,36000:]
 
 history = cnn.fit(X_train, [y_train[0]], batch_size = 64, validation_data=(X_test, y_test[0]), epochs=5)
 
+def predict(address):
+    img = cv2.imread((os.path.join('.', address)), cv2.IMREAD_GRAYSCALE)
+    img = cv2.resize(img, (30, 15))
+    img_array = np.zeros((1, 15, 30, 1))
+    img_array[0, :, :, 0] = img
+    prediction = np.array(cnn.predict(img_array))
+    prediction = np.reshape(prediction, (1, 36))
+    inds = []
+    for char in prediction:
+        inds.append(np.argmax(char))
+    answer = ''
+    for i in inds:
+        answer += symbols[i]
+    return answer
