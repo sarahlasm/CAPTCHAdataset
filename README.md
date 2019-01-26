@@ -5,7 +5,7 @@ Sarah Lasman and Yaxi Lei
 To create a convolutional neural network in order to solve CAPTCHAs
 
 ## Source files
-Kerry Crop.py: used to crop out and store all the individual characters <br />
+Crop.py: used to crop out and store all the individual characters <br />
 CAPTCHA_CNN.py: performs the data processing, CNN building, and predicting
 
 ## Sources used
