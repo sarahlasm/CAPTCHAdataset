@@ -5,6 +5,7 @@ import numpy as np
 THRESHOLD = 165
 LUT = [0]*THRESHOLD + [1]*(256 - THRESHOLD)
 
+# Crops out each of the individual characters
 def capt_process(capt):
     capt_gray = capt.convert("L")
     capt_bw = capt_gray.point(LUT, "1")
@@ -30,9 +31,11 @@ for filename in os.listdir(dir):
         nameindex = filename.find('_') + 1
         y.extend(filename[nameindex:nameindex+4])
         for i in range(len(y)):
+            # Add cropped images to a specific folder
             f_name = "/Users/1d_lyx/Desktop/Chapman/Interterm 2019/Cropped/" + str(n) + "_" + y[i] + ".jpg"
             pix = np.array(x[i])
             p = np.count_nonzero(pix) / pix.size
+            # If an image is over 80% black or white, discard it
             if 0.2 < p < 0.8:
                 x[i].save(f_name)
                 n += 1
